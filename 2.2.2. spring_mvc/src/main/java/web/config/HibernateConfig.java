@@ -27,8 +27,12 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PersistenceContext
 public class HibernateConfig {
-    @Autowired
-    private Environment env;
+
+    private final Environment env;
+
+    public HibernateConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DataSource dataSource() {
@@ -52,6 +56,7 @@ public class HibernateConfig {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         em.setJpaProperties(properties);
         return em;
     }
